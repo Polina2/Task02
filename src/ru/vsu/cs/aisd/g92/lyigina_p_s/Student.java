@@ -25,4 +25,15 @@ public class Student {
         if (course >= 1 && course <= 6)
             this.course = course;
     }
+
+    @Override
+    public String toString() {
+        return fio + ' ' + course;
+    }
+
+    public static Student toStudent(String str) {
+        String name = str.substring(0, str.lastIndexOf(' '));
+        int course = Integer.parseInt(str.substring(str.lastIndexOf(' ')+1));
+        return new Student(name, course);
+    }
 }
