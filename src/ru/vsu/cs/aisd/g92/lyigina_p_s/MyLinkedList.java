@@ -1,6 +1,28 @@
 package ru.vsu.cs.aisd.g92.lyigina_p_s;
 
-public class MyLinkedList<T> {
+import java.util.Iterator;
+
+public class MyLinkedList<T> implements Iterable<T> {
+    @Override
+    public Iterator<T> iterator() {
+        class MyLinkedListIterator implements Iterator<T> {
+            ListNode current = head;
+
+            @Override
+            public boolean hasNext() {
+                return current != null;
+            }
+
+            @Override
+            public T next() {
+                T value = current.getValue();
+                current = current.getNext();
+                return value;
+            }
+        }
+        return new MyLinkedListIterator();
+    }
+
     private class ListNode {
         private T value;
         private ListNode next;
@@ -128,5 +150,13 @@ public class MyLinkedList<T> {
             count++;
         }
         return current;
+    }
+
+    public T getFirst() {
+        return head.getValue();
+    }
+
+    public T getLast() {
+        return tail.getValue();
     }
 }
