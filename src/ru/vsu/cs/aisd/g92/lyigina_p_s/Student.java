@@ -28,10 +28,14 @@ public class Student {
 
     @Override
     public String toString() {
+        if (course == 0)
+            return "";
         return fio + ' ' + course;
     }
 
     public static Student toStudent(String str) {
+        if (str.length() == 0)
+            return new Student("", 0);
         String name = str.substring(0, str.lastIndexOf(' '));
         int course = Integer.parseInt(str.substring(str.lastIndexOf(' ')+1));
         return new Student(name, course);

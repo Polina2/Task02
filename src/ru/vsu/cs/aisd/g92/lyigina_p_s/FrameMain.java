@@ -46,7 +46,7 @@ public class FrameMain extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (fileChooserOpen.showOpenDialog(panelMain) == JFileChooser.APPROVE_OPTION) {
-                    MyLinkedList<Student> students = Utils.fileToList(fileChooserOpen.getSelectedFile().getPath());
+                    MyLinkedList students = Utils.fileToList(fileChooserOpen.getSelectedFile().getPath());
                     Utils.listToTable(students, tableInput);
                 }
             }
@@ -55,7 +55,7 @@ public class FrameMain extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (fileChooserSave.showOpenDialog(panelMain) == JFileChooser.APPROVE_OPTION) {
-                    MyLinkedList<Student> students = Utils.tableToList(tableOutput);
+                    MyLinkedList students = Utils.tableToList(tableOutput);
                     Utils.listToFile(students, fileChooserSave.getSelectedFile().getPath());
                 }
             }
@@ -63,7 +63,9 @@ public class FrameMain extends JFrame {
         buttonAnswer.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Utils.listToTable(Utils.solution(Utils.tableToList(tableInput)), tableOutput);
+                MyLinkedList list = Utils.tableToList(tableInput);
+                list.sortByCourse();
+                Utils.listToTable(list, tableOutput);
             }
         });
     }

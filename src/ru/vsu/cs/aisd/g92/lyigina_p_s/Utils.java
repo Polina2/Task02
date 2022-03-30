@@ -9,8 +9,8 @@ import java.io.PrintWriter;
 import java.util.Objects;
 
 public class Utils {
-    public static MyLinkedList<Student> fileToList(String fileName) {
-        MyLinkedList<Student> students = new MyLinkedList<>();
+    public static MyLinkedList fileToList(String fileName) {
+        MyLinkedList students = new MyStudentLinkedList();
         try {
             String[] strs = ArrayUtils.readLinesFromFile(fileName);
             for (String str : strs) {
@@ -22,7 +22,7 @@ public class Utils {
         return students;
     }
 
-    public static void listToTable(MyLinkedList<Student> list, JTable table) {
+    public static void listToTable(MyLinkedList list, JTable table) {
         String[][] array = new String[list.getSize()][1];
         int i = 0;
         for (Student s : list) {
@@ -32,16 +32,17 @@ public class Utils {
         JTableUtils.writeArrayToJTable(table, array);
     }
 
-    public static MyLinkedList<Student> tableToList(JTable table) {
-        MyLinkedList<Student> list = new MyLinkedList<>();
+    public static MyLinkedList tableToList(JTable table) {
+        MyLinkedList list = new MyLinkedList();
         String[][] stringArray = Objects.requireNonNull(JTableUtils.readStringMatrixFromJTable(table));
         for (String[] s : stringArray) {
-            list.addLast(Student.toStudent(s[0]));
+            if (s.length != 0)
+                list.addLast(Student.toStudent(s[0]));
         }
         return list;
     }
 
-    public static void listToFile(MyLinkedList<Student> list, String fileName) {
+    public static void listToFile(MyLinkedList list, String fileName) {
         try {
             PrintWriter out = new PrintWriter(fileName);
             for (Student s : list) {
@@ -51,7 +52,7 @@ public class Utils {
             e.printStackTrace();
         }
     }
-
+/*
     public static MyLinkedList<Student> solution(MyLinkedList<Student> students) {
         MyLinkedList<Student>[] courses = new MyLinkedList[6];
         for (int i = 0; i < 6; i++)
@@ -68,5 +69,5 @@ public class Utils {
             }
         }
         return ans;
-    }
+    }*/
 }

@@ -2,10 +2,10 @@ package ru.vsu.cs.aisd.g92.lyigina_p_s;
 
 import java.util.Iterator;
 
-public class MyLinkedList<T> implements Iterable<T> {
+public class MyLinkedList implements Iterable<Student> {
     @Override
-    public Iterator<T> iterator() {
-        class MyLinkedListIterator implements Iterator<T> {
+    public Iterator<Student> iterator() {
+        class MyLinkedListIterator implements Iterator<Student> {
             ListNode current = head;
 
             @Override
@@ -14,8 +14,8 @@ public class MyLinkedList<T> implements Iterable<T> {
             }
 
             @Override
-            public T next() {
-                T value = current.getValue();
+            public Student next() {
+                Student value = current.getValue();
                 current = current.getNext();
                 return value;
             }
@@ -24,23 +24,23 @@ public class MyLinkedList<T> implements Iterable<T> {
     }
 
     private class ListNode {
-        private T value;
+        private Student value;
         private ListNode next;
 
-        public ListNode(T value, ListNode next){
+        public ListNode(Student value, ListNode next){
             this.value = value;
             this.next = next;
         }
 
-        public ListNode(T value){
+        public ListNode(Student value){
             this(value, null);
         }
 
-        public T getValue() {
+        public Student getValue() {
             return value;
         }
 
-        public void setValue(T value) {
+        public void setValue(Student value) {
             this.value = value;
         }
 
@@ -67,7 +67,7 @@ public class MyLinkedList<T> implements Iterable<T> {
         return size;
     }
 
-    public void addFirst(T value) {
+    public void addFirst(Student value) {
         if (isEmpty()) {
             head = tail = new ListNode(value);
         } else {
@@ -76,7 +76,7 @@ public class MyLinkedList<T> implements Iterable<T> {
         size++;
     }
 
-    public void addLast(T value) {
+    public void addLast(Student value) {
         if (isEmpty())
             head = tail = new ListNode(value);
         else {
@@ -86,7 +86,7 @@ public class MyLinkedList<T> implements Iterable<T> {
         size++;
     }
 
-    public void insert(T value, int index) {
+    public void insert(Student value, int index) {
         if (index == 0)
             addFirst(value);
         else if (index == size)
@@ -136,11 +136,11 @@ public class MyLinkedList<T> implements Iterable<T> {
         return size == 0;
     }
 
-    public T get(int index) {
+    public Student get(int index) {
         return getNode(index).getValue();
     }
 
-    private ListNode getNode(int index) {
+    protected ListNode getNode(int index) {
         if (index < 0 || index >= size)
             throw new IndexOutOfBoundsException("Index out of bounds");
         ListNode current = head;
@@ -152,11 +152,81 @@ public class MyLinkedList<T> implements Iterable<T> {
         return current;
     }
 
-    public T getFirst() {
+    public Student getFirst() {
         return head.getValue();
     }
 
-    public T getLast() {
+    public Student getLast() {
         return tail.getValue();
+    }
+
+    public void swap(ListNode prev1, ListNode prev2) {
+        ListNode tmp = prev2.getNext().getNext();
+        prev2.getNext().setNext(prev1.getNext().getNext());
+        prev1.getNext().setNext(tmp);
+        tmp = prev1.getNext();
+        prev1.setNext(prev2.getNext());
+        prev2.setNext(tmp);
+    }
+
+    public void sortByCourse() {
+        ListNode[] heads = new ListNode[6];
+        ListNode[] tails = new ListNode[6];
+
+        ListNode cur = head;
+        //ListNode prev = null;
+        //int count = 0;
+        if (cur == null)
+            return;
+        while (cur != null) {
+            if (heads[cur.getValue().getCourse()-1] == null) {
+                heads[cur.getValue().getCourse()-1] = cur;
+                tails[cur.getValue().getCourse()-1] = cur;
+            } else {
+                tails[cur.getValue().getCourse()-1].setNext(cur);
+                tails[cur.getValue().getCourse()-1] = cur;
+                //move(heads[cur.getValue().getCourse()-1], prev);
+                //if (tails[cur.getValue().getCourse()-1].equals(heads[cur.getValue().getCourse()-1]))
+                //    tails[cur.getValue().getCourse()-1] = cur;
+            }
+            //prev = cur;
+            cur = cur.getNext();
+            //count++;
+        }
+
+        int i = 0;
+        while (heads[i] == null) {
+            i++;
+        }
+        head = heads[i];
+        int j = i+1;
+        while (j < 6) {
+            if (heads[j] == null)
+                j++;
+            else {
+                tails[i].setNext(heads[j]);
+                tail = tails[j];
+                i = j;
+                j++;
+            }
+        }
+        tail.setNext(null);
+    }
+
+    private void move(ListNode prev1, ListNode prev2) {
+        ListNode tmp = prev2.getNext();
+        prev2.setNext(tmp.getNext());
+        tmp.setNext(prev1.getNext());
+        prev1.setNext(tmp);
+    }
+
+    public int getSize1() {
+        ListNode cur = head;
+        int i = 0;
+        while (cur != null) {
+            i++;
+            cur = cur.getNext();
+        }
+        return i;
     }
 }
